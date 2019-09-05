@@ -1,4 +1,4 @@
-package com.example.servicesandbroadcastsassignment
+package com.example.servicesandbroadcasts
 
 import org.junit.Test
 

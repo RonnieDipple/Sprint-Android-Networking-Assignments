@@ -1,4 +1,4 @@
-package com.example.servicesandbroadcastsassignment
+package com.example.servicesandbroadcasts
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
