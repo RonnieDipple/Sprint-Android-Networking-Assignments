@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.GetPickerActivity">
+    tools:context=".activities.GetPickerActivity">
 
     <Button
         android:id="@+id/btn_get_call"
@@ -27,7 +27,7 @@
         />
 
     <Button
-        android:id="@+id/btn_put"
+        android:id="@+id/btn_get_query"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Get call with a query parameter"

@@ -1,4 +1,4 @@
-package com.example.httpoperations.Activities
+package com.example.httpoperations.activities
 
 import android.content.Context
 import android.content.Intent
@@ -15,6 +15,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
+        //series of onclick listeners with snack bar popups and intents
 
         btn_get.setOnClickListener {
             if (!isNetworkConnected()){
@@ -66,6 +68,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    //Checks for connectivity
     private fun isNetworkConnected(): Boolean{
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager

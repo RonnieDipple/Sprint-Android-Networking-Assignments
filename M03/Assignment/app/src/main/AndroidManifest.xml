@@ -12,12 +12,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.GetPickerActivity"></activity>
-        <activity android:name=".Activities.DeleteActivity" />
-        <activity android:name=".Activities.PutActivity" />
-        <activity android:name=".Activities.PostActivity" />
-        <activity android:name=".Activities.GetActivity" />
-        <activity android:name=".Activities.MainActivity">
+        <activity android:name=".activities.GetPickerActivity"></activity>
+        <activity android:name=".activities.DeleteActivity" />
+        <activity android:name=".activities.PutActivity" />
+        <activity android:name=".activities.PostActivity" />
+        <activity android:name=".activities.GetActivity" />
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
