@@ -1,10 +1,15 @@
 package com.example.servicesandbroadcasts
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import kotlinx.android.synthetic.main.activity_fullscreen.*
 
 /**
@@ -12,6 +17,7 @@ import kotlinx.android.synthetic.main.activity_fullscreen.*
  * status bar and navigation/system bar) with user interaction.
  */
 class FullscreenActivity : AppCompatActivity() {
+
     private val mHideHandler = Handler()
     private val mHidePart2Runnable = Runnable {
         // Delayed removal of status and navigation bar
@@ -49,6 +55,11 @@ class FullscreenActivity : AppCompatActivity() {
         false
     }
 
+    private lateinit var imageDownloadReceiver: BroadcastReceiver
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,12 +68,15 @@ class FullscreenActivity : AppCompatActivity() {
 
         button_image.setOnClickListener {
             val serviceIntent = Intent(this, ImageDownloadService::class.java)
+            serviceIntent.putExtra(ImageDownloadService.BITMAP_HEIGHT, fullscreen_content.width)
+            serviceIntent.putExtra(ImageDownloadService.BITMAP_WIDTH, fullscreen_content.height)
             this.startService(serviceIntent)
-            button_image.isEnabled = false
+           // button_image.isEnabled = false
 
         }
 
         mVisible = true
+
 
         // Set up the user interaction to manually show or hide the system UI.
         fullscreen_content.setOnClickListener { toggle() }
@@ -71,6 +85,23 @@ class FullscreenActivity : AppCompatActivity() {
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
         button_image.setOnTouchListener(mDelayHideTouchListener)
+
+        imageDownloadReceiver = object: BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.action == ImageDownloadService.FILE_DOWNLOADED_ACTION) {
+                    val bitmap = intent.getParcelableExtra<Bitmap>(ImageDownloadService.DOWNLOADED_IMAGE)
+                    fullscreen_content.setImageBitmap(bitmap)
+                }
+            }
+        }
+
+        val intentFilter = IntentFilter().apply {
+            addAction(ImageDownloadService.FILE_DOWNLOADED_ACTION)
+        }
+
+        LocalBroadcastManager.getInstance(this).registerReceiver(imageDownloadReceiver, intentFilter)
+
+
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -113,6 +144,12 @@ class FullscreenActivity : AppCompatActivity() {
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY.toLong())
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(imageDownloadReceiver)
+    }
+
+
     /**
      * Schedules a call to hide() in [delayMillis], canceling any
      * previously scheduled calls.
@@ -141,4 +178,6 @@ class FullscreenActivity : AppCompatActivity() {
          */
         private val UI_ANIMATION_DELAY = 300
     }
+
+
 }

@@ -25,13 +25,14 @@ class ImageDownloadService: Service() {
 
             val intent = Intent(FILE_DOWNLOADED_ACTION).apply {
                 putExtra(DOWNLOADED_IMAGE, bitmap)
-                putExtra(BITMAP_WIDTH, BITMAP_HEIGHT)
+
             }
 
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+            stopSelf()
 
-        })
-        stopSelf()
+        }).start()
+
         return super.onStartCommand(intent, flags, startId)
 
 
